@@ -1,0 +1,12 @@
+{
+  "name": "quasagram-backend",
+  "version": "1.0.0",
+  "description": "Instagram 'clone' backend",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vitor Lima <viitorlima2000@gmail.com>",
+  "private": true,
+  "license": "ISC"
+}
