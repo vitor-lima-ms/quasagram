@@ -50,6 +50,10 @@
     // Express.js docs recomendations
     "rewriteRelativeImportExtensions": true,
     "erasableSyntaxOnly": true,
-    "noEmit": true
+    "noEmit": true,
+
+    // For TSyring
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   }
 }
