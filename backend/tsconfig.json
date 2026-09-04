@@ -4,13 +4,6 @@
     // File Layout
     "rootDir": "./src",
     "outDir": "./dist",
-    "paths": {
-      "@app/*": ["./src/app/*"],
-      "@helpers/*": ["./src/helpers/*"],
-      "@infra/*": ["./src/infra/*"],
-      "@shared/*": ["./src/shared/*"],
-      "@tests/*": ["./tests/*"]
-    },
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
