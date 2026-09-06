@@ -13,7 +13,7 @@ export type Int64String = string;
 export type DateString = string;
 
 export interface GetUserByUidData {
-  user?: { username: string; email: string };
+  user?: { id: string } & User_Key;
 }
 
 export interface GetUserByUidVariables {
@@ -26,7 +26,7 @@ export interface Post_Key {
 }
 
 export interface User_Key {
-  id: UUIDString;
+  id: string;
   __typename?: 'User_Key';
 }
 

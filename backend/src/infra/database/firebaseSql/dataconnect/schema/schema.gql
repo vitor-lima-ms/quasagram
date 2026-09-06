@@ -1,9 +1,5 @@
 type User @table {
-  username: String! @unique
-  email: String! @unique
-  bio: String
-  avatarUrl: String
-  uid: String! @unique
+  id: String! @default(expr: "auth.uid")
 }
 
 type Post @table {
