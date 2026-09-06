@@ -10,8 +10,13 @@ export interface IGetUserByUidInput {
   uid: string;
 }
 export interface IGetUserByUidOutput {
-  username: string;
-  email: string;
+  email?: string;
+  emailVerified: boolean;
+  displayName?: string;
+  photoUrl?: string;
+  phoneNumber?: string;
+  disabled: boolean;
+  uid: string;
 }
 
 export interface IFBSQLUserRepository {

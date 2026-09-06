@@ -1,7 +1,8 @@
+import { container, inject, singleton } from 'tsyringe';
 import { DataConnect } from 'firebase-admin/data-connect';
 import { getAuth } from 'firebase-admin/auth';
 import { getUserByUid } from '@dataconnect/admin-generated';
-import { container, inject, singleton } from 'tsyringe';
+import firebaseAdmin from '../../../../../configs/FirebaseAdminConfig.ts';
 
 import AppError from '../../../../../../app/errors/AppError.ts';
 import type {
@@ -22,20 +23,31 @@ class FBSQLUserRepository implements IFBSQLUserRepository {
   async getUserByUid({
     uid,
   }: IGetUserByUidInput): Promise<IGetUserByUidOutput> {
-    const temp = await getAuth().getUser(uid);
-
-    console.log({ temp });
-
     try {
-      const user = (await getUserByUid(this.fbsqlConn, { uid })).data.user;
+      const userFromFbsql = (await getUserByUid(this.fbsqlConn, { uid })).data
+        .user;
 
-      if (!user) {
+      if (!userFromFbsql) {
         throw new AppError({
           message: 'User not found',
           errorCode: 'USER_NOT_FOUND',
-          internalMessage: user,
+          internalMessage: userFromFbsql,
         });
       }
+
+      const userFromFbAuth = await getAuth(firebaseAdmin).getUser(
+        userFromFbsql.id,
+      );
+
+      const user: IGetUserByUidOutput = {
+        disabled: userFromFbAuth.disabled,
+        emailVerified: userFromFbAuth.emailVerified,
+        uid: userFromFbAuth.uid,
+        displayName: userFromFbAuth.displayName,
+        email: userFromFbAuth.email,
+        phoneNumber: userFromFbAuth.phoneNumber,
+        photoUrl: userFromFbAuth.photoURL,
+      };
 
       return user;
     } catch (error) {

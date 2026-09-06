@@ -7,8 +7,13 @@ interface IInput {
 }
 
 interface IOutput {
-  username: string;
-  email: string;
+  email?: string;
+  emailVerified: boolean;
+  displayName?: string;
+  photoUrl?: string;
+  phoneNumber?: string;
+  disabled: boolean;
+  uid: string;
 }
 
 @singleton()
