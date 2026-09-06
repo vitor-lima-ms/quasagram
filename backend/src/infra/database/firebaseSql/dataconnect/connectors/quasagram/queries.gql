@@ -1,0 +1,6 @@
+query GetUserByUid($uid: String!) {
+    user(first: { where: { uid: { eq: $uid } } }) {
+        username
+        email
+    }
+}

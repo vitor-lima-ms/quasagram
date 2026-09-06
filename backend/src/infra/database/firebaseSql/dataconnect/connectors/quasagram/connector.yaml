@@ -1,0 +1,6 @@
+connectorId: quasagram
+generate:
+    adminNodeSdk:
+        outputDir: ../../dataconnect-admin-generated
+        package: "@dataconnect/admin-generated"
+        packageJsonDir: ../../../../../../../

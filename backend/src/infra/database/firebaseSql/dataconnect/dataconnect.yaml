@@ -1,0 +1,13 @@
+specVersion: "v1"
+serviceId: "quasagram-c6a40-2-service"
+location: "southamerica-east1"
+schema:
+    source: "./schema"
+    datasource:
+        postgresql:
+            database: "quasagram-c6a40-2-database"
+            cloudSql:
+                instanceId: "quasagram-c6a40-instance"
+                # schemaValidation: "STRICT"     # STRICT mode makes Postgres schema match Data Connect exactly.
+                # schemaValidation: "COMPATIBLE" # COMPATIBLE mode makes Postgres schema compatible with Data Connect.
+connectorDirs: ["./connectors/quasagram"]

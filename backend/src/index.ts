@@ -1,10 +1,6 @@
-import express, { type Request, type Response} from 'express'
+import "reflect-metadata";
 
-const app = express();
+import main from "./infra/server.ts";
+import "./shared/index.ts";
 
-app.get("/", (req: Request, res: Response) => {
-  console.log(req);
-  res.send("Hello World!");
-});
-
-app.listen(3000);
+export const QUASAGRAM_API = main();

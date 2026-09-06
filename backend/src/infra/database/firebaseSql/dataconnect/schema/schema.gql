@@ -1,0 +1,15 @@
+type User @table {
+    username: String! @unique
+    email: String! @unique
+    bio: String
+    avatarUrl: String
+    uid: String! @unique
+}
+
+type Post @table {
+    imageUrl: String!
+    caption: String
+    createdAt: Timestamp! @default(expr: "request.time")
+    location: String
+    author: User!
+}
