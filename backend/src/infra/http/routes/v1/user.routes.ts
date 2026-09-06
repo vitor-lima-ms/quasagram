@@ -6,10 +6,9 @@ import UserController from "../../controllers/v1/UserController.ts";
 const router = Router();
 
 router.get(
-    "/:uid",
-    middlewares.userGetUserByUidRequest,
-    (req: Request, res: Response) =>
-        new UserController().getUserByUid(req, res),
+  "/:uid",
+  middlewares.userGetUserByUidRequest,
+  (req: Request, res: Response) => new UserController().getUserByUid(req, res),
 );
 
 export default router;

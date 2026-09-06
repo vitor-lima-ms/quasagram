@@ -4,6 +4,6 @@ import type { IFBSQLUserRepository } from "../app/repositories/v1/database/quasa
 import FBSQLUserRepository from "../infra/repositories/v1/database/firebaseSql/user/FBSQLUserRepository.ts";
 
 container.registerSingleton<IFBSQLUserRepository>(
-    "FBSQLUserRepository",
-    FBSQLUserRepository,
+  "FBSQLUserRepository",
+  FBSQLUserRepository,
 );
