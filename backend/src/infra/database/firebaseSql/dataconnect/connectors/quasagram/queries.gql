@@ -1,4 +1,4 @@
-query GetUserByUid($uid: String!) {
+query GetUserByUid($uid: String!) @auth(level: NO_ACCESS) {
     user(first: { where: { uid: { eq: $uid } } }) {
         username
         email
