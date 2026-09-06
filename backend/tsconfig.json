@@ -47,5 +47,6 @@
         // For TSyring
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true
-    }
+    },
+    "exclude": ["./eslint.config.ts", "./dist/**/*"]
 }
