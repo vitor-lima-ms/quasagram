@@ -1,5 +1,5 @@
 query GetUserByUid($uid: String!) @auth(level: NO_ACCESS) {
-  user(id: $uid) {
+  user(first: { where: { uid: { eq: $uid } } }) {
     id
   }
 }

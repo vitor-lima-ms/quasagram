@@ -1,5 +1,5 @@
 type User @table {
-  id: String! @default(expr: "auth.uid")
+  uid: String!
 }
 
 type Post @table {
