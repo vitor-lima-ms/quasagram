@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/firebase/firebase-tools/master/schema/firebase-config.json",
   "functions": [
     {
       "source": ".",
@@ -17,12 +18,14 @@
     }
   ],
   "dataconnect": { "source": "src/infra/database/firebaseSql/dataconnect" },
+  "firestore": { "edition": "enterprise" },
   "emulators": {
     "functions": { "port": 5001 },
     "dataconnect": {
       "port": 9399,
       "dataDir": "src/infra/database/firebaseSql/dataconnect/.dataconnect/pgliteData"
     },
+    "firestore": { "port": 8080, "edition": "enterprise" },
     "ui": { "enabled": true, "port": 4000 }
   }
 }
