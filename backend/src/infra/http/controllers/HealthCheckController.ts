@@ -1,10 +1,8 @@
-import type { Request, Response } from "express";
+import type { Request, Response } from 'express';
 
 class HealthCheckController {
   async healthCheck(_: Request, res: Response): Promise<Response> {
-    return res.status(200).json({
-      health: true,
-    });
+    return res.status(200).json({ health: true });
   }
 }
 

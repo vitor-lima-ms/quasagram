@@ -1,5 +1,3 @@
-import userGetUserByUidRequest from "./v1/requests/user/User_GetUserByUidRequest.ts";
+import userGetUserByUidRequest from './v1/requests/user/User_GetUserByUidRequest.ts';
 
-export default {
-  userGetUserByUidRequest,
-};
+export default { userGetUserByUidRequest };

@@ -1,12 +1,12 @@
-import { type Request, type Response, Router } from "express";
+import { type Request, type Response, Router } from 'express';
 
-import middlewares from "../../middlewares/index.ts";
-import UserController from "../../controllers/v1/UserController.ts";
+import middlewares from '../../middlewares/index.ts';
+import UserController from '../../controllers/v1/UserController.ts';
 
 const router = Router();
 
 router.get(
-  "/:uid",
+  '/:uid',
   middlewares.userGetUserByUidRequest,
   (req: Request, res: Response) => new UserController().getUserByUid(req, res),
 );

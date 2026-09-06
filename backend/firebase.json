@@ -16,20 +16,13 @@
       "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run build"]
     }
   ],
-  "dataconnect": {
-    "source": "src/infra/database/firebaseSql/dataconnect"
-  },
+  "dataconnect": { "source": "src/infra/database/firebaseSql/dataconnect" },
   "emulators": {
-    "functions": {
-      "port": 5001
-    },
+    "functions": { "port": 5001 },
     "dataconnect": {
       "port": 9399,
       "dataDir": "src/infra/database/firebaseSql/dataconnect/.dataconnect/pgliteData"
     },
-    "ui": {
-      "enabled": true,
-      "port": 4000
-    }
+    "ui": { "enabled": true, "port": 4000 }
   }
 }

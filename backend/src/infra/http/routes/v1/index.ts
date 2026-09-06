@@ -1,9 +1,9 @@
-import { Router } from "express";
+import { Router } from 'express';
 
-import userRouter from "./user.routes.ts";
+import userRouter from './user.routes.ts';
 
 const routers = Router();
 
-routers.use("/user", userRouter);
+routers.use('/user', userRouter);
 
 export default routers;

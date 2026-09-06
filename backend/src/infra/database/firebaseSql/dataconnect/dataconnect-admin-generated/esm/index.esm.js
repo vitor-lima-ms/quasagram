@@ -1,9 +1,9 @@
-import { validateAdminArgs } from "firebase-admin/data-connect";
+import { validateAdminArgs } from 'firebase-admin/data-connect';
 
 export const connectorConfig = {
-  connector: "quasagram",
-  serviceId: "quasagram-c6a40-2-service",
-  location: "southamerica-east1",
+  connector: 'quasagram',
+  serviceId: 'quasagram-c6a40-2-service',
+  location: 'southamerica-east1',
 };
 
 export function getUserByUid(dcOrVarsOrOptions, varsOrOptions, options) {
@@ -20,5 +20,5 @@ export function getUserByUid(dcOrVarsOrOptions, varsOrOptions, options) {
     true,
   );
   dcInstance.useGen(true);
-  return dcInstance.executeQuery("GetUserByUid", inputVars, inputOpts);
+  return dcInstance.executeQuery('GetUserByUid', inputVars, inputOpts);
 }

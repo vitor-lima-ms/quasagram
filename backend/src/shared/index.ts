@@ -1,2 +1,2 @@
-import "./dbs.container.ts";
-import "./repositories.container.ts";
+import './dbs.container.ts';
+import './repositories.container.ts';

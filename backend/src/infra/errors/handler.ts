@@ -1,10 +1,10 @@
-import HTTP from "http";
-import { isAxiosError } from "axios";
-import { isCelebrateError } from "celebrate";
-import type { NextFunction, Request, Response } from "express";
+import HTTP from 'http';
+import { isAxiosError } from 'axios';
+import { isCelebrateError } from 'celebrate';
+import type { NextFunction, Request, Response } from 'express';
 
-import AppError from "../../app/errors/AppError.ts";
-import AppHttpError from "../../app/errors/AppHttpError.ts";
+import AppError from '../../app/errors/AppError.ts';
+import AppHttpError from '../../app/errors/AppHttpError.ts';
 
 export default async (
   err: Error,
@@ -27,38 +27,33 @@ export default async (
       };
     });
 
-    return res.status(statusCode).json({
-      statusCode,
-      error: HTTP.STATUS_CODES[statusCode],
-      message: err.message,
-      validation,
-    });
+    return res
+      .status(statusCode)
+      .json({
+        statusCode,
+        error: HTTP.STATUS_CODES[statusCode],
+        message: err.message,
+        validation,
+      });
   }
 
   if (err instanceof AppError) {
-    return res.status(500).json({
-      message: err.message,
-      code: err.errorCode,
-    });
+    return res.status(500).json({ message: err.message, code: err.errorCode });
   }
 
   if (err instanceof AppHttpError) {
-    return res.status(err.statusCode).json({
-      message: err.message,
-      code: err.errorCode,
-      errors: err.errors,
-    });
+    return res
+      .status(err.statusCode)
+      .json({ message: err.message, code: err.errorCode, errors: err.errors });
   }
 
   if (isAxiosError(err)) {
-    return res.status(500).json({
-      message: "Internal server error",
-      errors: [err.response?.data],
-    });
+    return res
+      .status(500)
+      .json({ message: 'Internal server error', errors: [err.response?.data] });
   }
 
-  return res.status(500).json({
-    message: "Internal server error",
-    errors: [err.message],
-  });
+  return res
+    .status(500)
+    .json({ message: 'Internal server error', errors: [err.message] });
 };

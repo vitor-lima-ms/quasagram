@@ -1,4 +1,4 @@
-import { initializeApp as initializeFirebaseAdmin } from "firebase-admin/app";
+import { initializeApp as initializeFirebaseAdmin } from 'firebase-admin/app';
 
 const firebaseAdmin = initializeFirebaseAdmin();
 

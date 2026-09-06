@@ -1,4 +1,4 @@
-import { HttpStatusCode } from "axios";
+import { HttpStatusCode } from 'axios';
 
 interface IAppHttpErrorInput {
   message: string;

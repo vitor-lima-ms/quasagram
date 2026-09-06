@@ -3,7 +3,7 @@ import {
   DataConnect,
   OperationOptions,
   ExecuteOperationResponse,
-} from "firebase-admin/data-connect";
+} from 'firebase-admin/data-connect';
 
 export const connectorConfig: ConnectorConfig;
 
@@ -13,10 +13,7 @@ export type Int64String = string;
 export type DateString = string;
 
 export interface GetUserByUidData {
-  user?: {
-    username: string;
-    email: string;
-  };
+  user?: { username: string; email: string };
 }
 
 export interface GetUserByUidVariables {
@@ -25,12 +22,12 @@ export interface GetUserByUidVariables {
 
 export interface Post_Key {
   id: UUIDString;
-  __typename?: "Post_Key";
+  __typename?: 'Post_Key';
 }
 
 export interface User_Key {
   id: UUIDString;
-  __typename?: "User_Key";
+  __typename?: 'User_Key';
 }
 
 /** Generated Node Admin SDK operation action function for the 'GetUserByUid' Query. Allow users to execute without passing in DataConnect. */

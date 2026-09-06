@@ -1,6 +1,6 @@
-import { inject, singleton } from "tsyringe";
+import { inject, singleton } from 'tsyringe';
 
-import type { IFBSQLUserRepository } from "../../../repositories/v1/database/quasagram/user/FBSQLUserRepository.ts";
+import type { IFBSQLUserRepository } from '../../../repositories/v1/database/quasagram/user/FBSQLUserRepository.ts';
 
 interface IInput {
   uid: string;
@@ -16,7 +16,7 @@ class GetUserById {
   private fbsqlUserRepository: IFBSQLUserRepository;
 
   constructor(
-    @inject("FBSQLUserRepository")
+    @inject('FBSQLUserRepository')
     fbsqlUserRepository: IFBSQLUserRepository,
   ) {
     this.fbsqlUserRepository = fbsqlUserRepository;
