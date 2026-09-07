@@ -1,5 +1,9 @@
-query GetUserByUid($uid: String!) @auth(level: NO_ACCESS) {
-  user(first: { where: { uid: { eq: $uid } } }) {
-    id
+mutation CreateUser($uid: String!) @auth(level: NO_ACCESS) {
+  user_insert(data: { uid: $uid })
+}
+
+query GetUserByUid($uid: User_Key!) @auth(level: NO_ACCESS) {
+  user(key: $uid) {
+    uid
   }
 }

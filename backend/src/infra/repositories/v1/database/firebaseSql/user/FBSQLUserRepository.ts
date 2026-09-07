@@ -1,11 +1,13 @@
-import { container, inject, singleton } from 'tsyringe';
+import { createUser, getUserByUid } from '@dataconnect/admin-generated';
 import { DataConnect } from 'firebase-admin/data-connect';
-import { getAuth } from 'firebase-admin/auth';
-import { getUserByUid } from '@dataconnect/admin-generated';
 import firebaseAdmin from '../../../../../configs/FirebaseAdminConfig.ts';
+import { getAuth } from 'firebase-admin/auth';
+import { inject, singleton } from 'tsyringe';
 
 import AppError from '../../../../../../app/errors/AppError.ts';
 import type {
+  ICreateUserInput,
+  ICreateUserOutput,
   IFBSQLUserRepository,
   IGetUserByUidInput,
   IGetUserByUidOutput,
@@ -24,8 +26,9 @@ class FBSQLUserRepository implements IFBSQLUserRepository {
     uid,
   }: IGetUserByUidInput): Promise<IGetUserByUidOutput> {
     try {
-      const userFromFbsql = (await getUserByUid(this.fbsqlConn, { uid })).data
-        .user;
+      const userFromFbsql = (
+        await getUserByUid(this.fbsqlConn, { uid: { uid } })
+      ).data.user;
 
       if (!userFromFbsql) {
         throw new AppError({
@@ -36,7 +39,7 @@ class FBSQLUserRepository implements IFBSQLUserRepository {
       }
 
       const userFromFbAuth = await getAuth(firebaseAdmin).getUser(
-        userFromFbsql.id,
+        userFromFbsql.uid,
       );
 
       const user: IGetUserByUidOutput = {
@@ -59,8 +62,50 @@ class FBSQLUserRepository implements IFBSQLUserRepository {
       });
     }
   }
-}
 
-container.registerSingleton('FBSQLUserRepository', FBSQLUserRepository);
+  async createUser({
+    email,
+    password,
+    displayName,
+    phoneNumber,
+    profilePhoto: photoURL,
+  }: ICreateUserInput): Promise<ICreateUserOutput> {
+    try {
+      const existingUser = await getAuth(firebaseAdmin).getUserByEmail(email);
+
+      if (existingUser) {
+        throw new AppError({
+          message: `An user with e-mail ${existingUser.email} already exists`,
+          errorCode: 'USER_EMAIL_ALREADY_EXISTS',
+          internalMessage: String(existingUser.toJSON()),
+        });
+      }
+
+      const uidFromCreatedUserInFbAuth = (
+        await getAuth().createUser({
+          email,
+          password,
+          displayName,
+          phoneNumber,
+          photoURL,
+        })
+      ).uid;
+
+      // Equals to uidFromCreatedUserInFbAuth
+      const uidFromCreatedUserInFbsql = (
+        await createUser(this.fbsqlConn, { uid: uidFromCreatedUserInFbAuth })
+      ).data.user_insert.uid;
+
+      return { uid: uidFromCreatedUserInFbsql };
+    } catch (error) {
+      if (error instanceof AppError) throw error;
+
+      throw new AppError({
+        message: 'Error on createUser',
+        errorCode: 'ERROR_ON_createUser',
+      });
+    }
+  }
+}
 
 export default FBSQLUserRepository;

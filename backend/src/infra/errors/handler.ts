@@ -12,8 +12,7 @@ export default async (
   req: Request,
   res: Response,
   /* eslint-disable @typescript-eslint/no-unused-vars */
-  // @ts-expect-error The next function dont need to be explicitly used
-  next: NextFunction,
+  _: NextFunction,
 ): Promise<Response> => {
   if (isCelebrateError(err)) {
     const statusCode = 422;

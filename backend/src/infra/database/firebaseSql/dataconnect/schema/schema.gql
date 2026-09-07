@@ -1,11 +1,11 @@
-type User @table {
+type User @table(key: "uid") {
   uid: String!
 }
 
 type Post @table {
   imageUrl: String!
   caption: String
-  createdAt: Timestamp! @default(expr: "request.time")
+  createdAt: Timestamp!
   location: String
   author: User!
 }

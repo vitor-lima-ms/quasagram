@@ -1,9 +1,12 @@
 export interface ICreateUserInput {
   email: string;
   password: string;
+  displayName?: string;
+  profilePhoto?: string;
+  phoneNumber?: string;
 }
 export interface ICreateUserOutput {
-  email: string;
+  uid: string;
 }
 
 export interface IGetUserByUidInput {
@@ -20,5 +23,6 @@ export interface IGetUserByUidOutput {
 }
 
 export interface IFBSQLUserRepository {
+  createUser(input: ICreateUserInput): Promise<ICreateUserOutput>;
   getUserByUid(input: IGetUserByUidInput): Promise<IGetUserByUidOutput>;
 }

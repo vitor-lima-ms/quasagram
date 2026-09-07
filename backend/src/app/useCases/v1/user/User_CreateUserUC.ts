@@ -3,21 +3,19 @@ import { inject, injectable } from 'tsyringe';
 import type { IFBSQLUserRepository } from '../../../repositories/v1/database/quasagram/user/FBSQLUserRepository.ts';
 
 interface IInput {
-  uid: string;
+  email: string;
+  password: string;
+  displayName?: string;
+  profilePhoto?: string;
+  phoneNumber?: string;
 }
 
 interface IOutput {
-  email?: string;
-  emailVerified: boolean;
-  displayName?: string;
-  photoUrl?: string;
-  phoneNumber?: string;
-  disabled: boolean;
   uid: string;
 }
 
 @injectable()
-class GetUserById {
+class CreateUser {
   private fbsqlUserRepository: IFBSQLUserRepository;
 
   constructor(
@@ -27,11 +25,23 @@ class GetUserById {
     this.fbsqlUserRepository = fbsqlUserRepository;
   }
 
-  async execute({ uid }: IInput): Promise<IOutput> {
-    const user = this.fbsqlUserRepository.getUserByUid({ uid });
+  async execute({
+    email,
+    password,
+    displayName,
+    phoneNumber,
+    profilePhoto,
+  }: IInput): Promise<IOutput> {
+    const user = this.fbsqlUserRepository.createUser({
+      email,
+      password,
+      displayName,
+      phoneNumber,
+      profilePhoto,
+    });
 
     return user;
   }
 }
 
-export default GetUserById;
+export default CreateUser;
