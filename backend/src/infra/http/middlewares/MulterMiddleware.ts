@@ -33,6 +33,7 @@ export default (input: {
       files: input.formFileFields.length,
       fileSize: input.maxFileSize ? input.maxFileSize : DEFAULT_FILE_SIZE,
     },
+    storage: multer.memoryStorage(),
   };
 
   if (input.formFileFields.length === 1) {
