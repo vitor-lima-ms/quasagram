@@ -5,25 +5,21 @@ import UserController from '../../controllers/v1/UserController.ts';
 
 const router = Router();
 
-router.post(
-  '/create',
-  middlewares.userCreateUserRequest,
-  (req) => middlewares.multerMiddlewareFactory({
+router.post('/create', middlewares.userCreateUserRequest, (req) =>
+  middlewares.multerMiddlewareFactory({
     req,
     formFileFields: [
       {
-        acceptedMimetypes: [''],
+        acceptedMimetypes: ['image/jpeg', 'image/png'],
         fieldName: 'profilePhoto',
         maxNumberOfFiles: 1,
-      }
-    ]
-  })
-)
+      },
+    ],
+  }),
+);
 
-router.get(
-  '/:uid',
-  middlewares.userGetUserByUidRequest,
-  (req: Request, res: Response) => new UserController().getUserByUid(req, res),
+router.get('/:uid', (req: Request, res: Response) =>
+  new UserController().getUserByUid(req, res),
 );
 
 export default router;
