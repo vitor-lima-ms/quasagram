@@ -18,8 +18,10 @@ router.post('/create', middlewares.userCreateUserRequest, (req) =>
   }),
 );
 
-router.get('/:uid', (req: Request, res: Response) =>
-  new UserController().getUserByUid(req, res),
+router.get(
+  '/:uid',
+  middlewares.userGetUserByUidRequest,
+  (req: Request, res: Response) => new UserController().getUserByUid(req, res),
 );
 
 export default router;
