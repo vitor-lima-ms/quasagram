@@ -22,47 +22,6 @@ class FBSQLUserRepository implements IFBSQLUserRepository {
     this.fbsqlConn = fbsqlQuasagram.getConn();
   }
 
-  async getUserByUid({
-    uid,
-  }: IGetUserByUidInput): Promise<IGetUserByUidOutput> {
-    try {
-      const userFromFbsql = (
-        await getUserByUid(this.fbsqlConn, { uid: { uid } })
-      ).data.user;
-
-      if (!userFromFbsql) {
-        throw new AppError({
-          message: 'User not found',
-          errorCode: 'USER_NOT_FOUND',
-          internalMessage: userFromFbsql,
-        });
-      }
-
-      const userFromFbAuth = await getAuth(firebaseAdmin).getUser(
-        userFromFbsql.uid,
-      );
-
-      const user: IGetUserByUidOutput = {
-        disabled: userFromFbAuth.disabled,
-        emailVerified: userFromFbAuth.emailVerified,
-        uid: userFromFbAuth.uid,
-        displayName: userFromFbAuth.displayName,
-        email: userFromFbAuth.email,
-        phoneNumber: userFromFbAuth.phoneNumber,
-        photoUrl: userFromFbAuth.photoURL,
-      };
-
-      return user;
-    } catch (error) {
-      if (error instanceof AppError) throw error;
-
-      throw new AppError({
-        message: 'Error on getUserByUid',
-        errorCode: 'ERROR_ON_getUserBiUid',
-      });
-    }
-  }
-
   async createUser({
     email,
     password,
@@ -103,6 +62,47 @@ class FBSQLUserRepository implements IFBSQLUserRepository {
       throw new AppError({
         message: 'Error on createUser',
         errorCode: 'ERROR_ON_createUser',
+      });
+    }
+  }
+
+  async getUserByUid({
+    uid,
+  }: IGetUserByUidInput): Promise<IGetUserByUidOutput> {
+    try {
+      const userFromFbsql = (
+        await getUserByUid(this.fbsqlConn, { uid: { uid } })
+      ).data.user;
+
+      if (!userFromFbsql) {
+        throw new AppError({
+          message: 'User not found',
+          errorCode: 'USER_NOT_FOUND',
+          internalMessage: userFromFbsql,
+        });
+      }
+
+      const userFromFbAuth = await getAuth(firebaseAdmin).getUser(
+        userFromFbsql.uid,
+      );
+
+      const user: IGetUserByUidOutput = {
+        disabled: userFromFbAuth.disabled,
+        emailVerified: userFromFbAuth.emailVerified,
+        uid: userFromFbAuth.uid,
+        displayName: userFromFbAuth.displayName,
+        email: userFromFbAuth.email,
+        phoneNumber: userFromFbAuth.phoneNumber,
+        photoUrl: userFromFbAuth.photoURL,
+      };
+
+      return user;
+    } catch (error) {
+      if (error instanceof AppError) throw error;
+
+      throw new AppError({
+        message: 'Error on getUserByUid',
+        errorCode: 'ERROR_ON_getUserBiUid',
       });
     }
   }
