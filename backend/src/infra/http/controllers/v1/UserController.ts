@@ -16,7 +16,7 @@ class UserController {
 
     return res
       .status(200)
-      .json(await getUserByUidUC.execute({ uid: req.params[0]! }));
+      .json(await getUserByUidUC.execute({ uid: req.params.uid }));
   }
 }
 
