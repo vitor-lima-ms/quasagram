@@ -11,7 +11,7 @@ class UserController {
     return res
       .status(201)
       .json(
-        await createUserUC.execute({ ...req.body, profilePhoto: req.file }),
+        await createUserUC.execute({ ...req.body, profilePhoto: req.file!.buffer }), // The Busboy middleware ensure that req.file !== undefined
       );
   }
 

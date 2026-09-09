@@ -6,13 +6,13 @@ interface IInput {
   email: string;
   password: string;
   displayName?: string;
-  profilePhoto?: string;
+  profilePhoto?: Buffer;
   phoneNumber?: string;
 }
 
-// interface IOutput {
-//   uid: string;
-// }
+interface IOutput {
+  uid: string;
+}
 
 @injectable()
 class CreateUser {
@@ -31,24 +31,16 @@ class CreateUser {
     displayName,
     phoneNumber,
     profilePhoto,
-  }: IInput): Promise<void> {
-    // const user = this.fbsqlUserRepository.createUser({
-    //   email,
-    //   password,
-    //   displayName,
-    //   phoneNumber,
-    //   profilePhoto,
-    // });
-
-    // return user;
-
-    this.fbsqlUserRepository.createUser({
+  }: IInput): Promise<IOutput> {
+    const user = this.fbsqlUserRepository.createUser({
       email,
       password,
       displayName,
       phoneNumber,
       profilePhoto,
     });
+
+    return user;
   }
 }
 

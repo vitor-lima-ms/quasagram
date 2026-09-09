@@ -2,7 +2,7 @@ export interface ICreateUserInput {
   email: string;
   password: string;
   displayName?: string;
-  profilePhoto?: string;
+  profilePhoto?: Buffer;
   phoneNumber?: string;
 }
 export interface ICreateUserOutput {
@@ -23,6 +23,6 @@ export interface IGetUserByUidOutput {
 }
 
 export interface IFBSQLUserRepository {
-  createUser(input: ICreateUserInput): Promise<void>;
+  createUser(input: ICreateUserInput): Promise<ICreateUserOutput>;
   getUserByUid(input: IGetUserByUidInput): Promise<IGetUserByUidOutput>;
 }

@@ -1,22 +1,27 @@
 import { createUser, getUserByUid } from '@dataconnect/admin-generated';
 import { DataConnect } from 'firebase-admin/data-connect';
-import firebaseAdmin from '../../../../../configs/FirebaseAdminConfig.ts';
 import { getAuth, UserRecord } from 'firebase-admin/auth';
+import { getDownloadURL, getStorage } from 'firebase-admin/storage';
 import { inject, singleton } from 'tsyringe';
+import { randomUUID } from 'node:crypto';
 
 import AppError from '../../../../../../app/errors/AppError.ts';
+import firebaseAdmin from '../../../../../configs/FirebaseAdminConfig.ts';
 import type {
   ICreateUserInput,
-  // ICreateUserOutput,
+  ICreateUserOutput,
   IFBSQLUserRepository,
   IGetUserByUidInput,
   IGetUserByUidOutput,
 } from '../../../../../../app/repositories/v1/database/quasagram/user/FBSQLUserRepository.ts';
+import isJpeg from '../../../../../../app/utils/isJpeg.ts';
 import FBSQLQuasagram from '../../../../../database/firebaseSql/FBSQLQuasagram.ts';
 
 @singleton()
 class FBSQLUserRepository implements IFBSQLUserRepository {
   private fbsqlConn: DataConnect;
+  private readonly firebaseAuth = getAuth(firebaseAdmin);
+  private readonly firestoreBucket = getStorage(firebaseAdmin).bucket();
 
   constructor(@inject(FBSQLQuasagram) fbsqlQuasagram: FBSQLQuasagram) {
     this.fbsqlConn = fbsqlQuasagram.getConn();
@@ -26,7 +31,7 @@ class FBSQLUserRepository implements IFBSQLUserRepository {
     email: string,
   ): Promise<UserRecord | null> {
     try {
-      const user = await getAuth(firebaseAdmin).getUserByEmail(email);
+      const user = await this.firebaseAuth.getUserByEmail(email);
 
       return user;
     } catch {
@@ -39,8 +44,11 @@ class FBSQLUserRepository implements IFBSQLUserRepository {
     password,
     displayName,
     phoneNumber,
-    // profilePhoto: photoURL,
-  }: ICreateUserInput): Promise<void> {
+    profilePhoto,
+  }: ICreateUserInput): Promise<ICreateUserOutput> {
+    // I move here to have access inside the catch block
+    const profilePhotoFileName = `${email}_profilePhoto`;
+
     try {
       const existingUser = await this.getUserFromFirebaseAuth(email);
 
@@ -51,13 +59,35 @@ class FBSQLUserRepository implements IFBSQLUserRepository {
         });
       }
 
+      const profilePhotoNotUndefined = profilePhoto!; // The Busboy middleware ensure that profilePhoto !== undefined
+      const profilePhotoFile = this.firestoreBucket.file(profilePhotoFileName);
+      const downloadToken = randomUUID();
+      await profilePhotoFile.save(profilePhotoNotUndefined, {
+        metadata: {
+          contentType: isJpeg(profilePhotoNotUndefined)
+            ? 'image/jpeg'
+            : 'image/png',
+          metadata: { firebaseStorageDownloadTokens: downloadToken },
+        },
+      });
+      const photoURL = await getDownloadURL(profilePhotoFile);
+
+      if (!photoURL) {
+        await profilePhotoFile.delete();
+
+        throw new AppError({
+          message: `Error on retrieve baseUrl from uploaded profilePhoto`,
+          errorCode: 'BASE_URL_FOR_USER_PROFILE_PHOTO_IS_UNDEFINED',
+        });
+      }
+
       const uidFromCreatedUserInFbAuth = (
         await getAuth().createUser({
           email,
           password,
           displayName,
           phoneNumber,
-          // photoURL,
+          photoURL,
         })
       ).uid;
 
@@ -66,8 +96,14 @@ class FBSQLUserRepository implements IFBSQLUserRepository {
         await createUser(this.fbsqlConn, { uid: uidFromCreatedUserInFbAuth })
       ).data.user_insert.uid;
 
-      console.log({ uidFromCreatedUserInFbsql });
+      return { uid: uidFromCreatedUserInFbsql };
     } catch (error) {
+      await this.firebaseAuth.deleteUser((await this.getUserFromFirebaseAuth(email))!.uid); // uid cant be undefine because we already create the user above
+
+      await this.firestoreBucket
+        .file(profilePhotoFileName)
+        .delete({ ignoreNotFound: true });
+
       if (error instanceof AppError) throw error;
 
       throw new AppError({
