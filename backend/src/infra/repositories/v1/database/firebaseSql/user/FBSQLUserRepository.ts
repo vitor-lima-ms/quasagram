@@ -1,4 +1,8 @@
-import { createUser, getUserByUid } from '@dataconnect/admin-generated';
+import {
+  createUser,
+  deleteUser,
+  getUserByUid,
+} from '@dataconnect/admin-generated';
 import { DataConnect } from 'firebase-admin/data-connect';
 import { getAuth, UserRecord } from 'firebase-admin/auth';
 import { getDownloadURL, getStorage } from 'firebase-admin/storage';
@@ -98,7 +102,15 @@ class FBSQLUserRepository implements IFBSQLUserRepository {
 
       return { uid: uidFromCreatedUserInFbsql };
     } catch (error) {
-      await this.firebaseAuth.deleteUser((await this.getUserFromFirebaseAuth(email))!.uid); // uid cant be undefine because we already create the user above
+      const recentlyCreatedUserUid = (await this.getUserFromFirebaseAuth(
+        email,
+      ))!.uid; // uid cant be undefine because we already create the user above
+
+      await this.firebaseAuth.deleteUser(recentlyCreatedUserUid);
+
+      await deleteUser(this.fbsqlConn, {
+        uid: { uid: recentlyCreatedUserUid },
+      });
 
       await this.firestoreBucket
         .file(profilePhotoFileName)

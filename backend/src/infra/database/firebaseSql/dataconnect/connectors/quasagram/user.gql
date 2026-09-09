@@ -7,3 +7,7 @@ query GetUserByUid($uid: User_Key!) @auth(level: NO_ACCESS) {
     uid
   }
 }
+
+mutation DeleteUser($uid: User_Key!) @auth(level: NO_ACCESS) {
+  user_delete(key: $uid)
+}
