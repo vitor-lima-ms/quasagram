@@ -3,6 +3,9 @@
   "dataconnect": {
     "source": "src/infra/database/firebaseSql/dataconnect"
   },
+  "storage": {
+    "rules": "firebase-dev-storage.rules"
+  },
   "functions": [
     {
       "source": ".",
