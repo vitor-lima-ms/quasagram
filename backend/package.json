@@ -24,18 +24,19 @@
   "dependencies": {
     "@dataconnect/admin-generated": "file:src/infra/database/firebaseSql/dataconnect/dataconnect-admin-generated",
     "axios": "^1.20.0",
+    "busboy": "^1.6.0",
     "celebrate": "^16.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "firebase-admin": "^13.6.0",
     "firebase-functions": "^7.0.0",
-    "multer": "^2.3.0",
     "reflect-metadata": "^0.2.2",
     "tsyringe": "^4.10.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/busboy": "^1.5.4",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/multer": "^2.2.0",

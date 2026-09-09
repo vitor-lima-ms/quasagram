@@ -1,5 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/firebase/firebase-tools/master/schema/firebase-config.json",
+  "dataconnect": { "source": "src/infra/database/firebaseSql/dataconnect" },
+  "firestore": { "edition": "enterprise" },
   "functions": [
     {
       "source": ".",
@@ -17,15 +19,14 @@
       "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run build"]
     }
   ],
-  "dataconnect": { "source": "src/infra/database/firebaseSql/dataconnect" },
-  "firestore": { "edition": "enterprise" },
   "emulators": {
-    "functions": { "port": 5001 },
+    "auth": { "port": 9099 },
     "dataconnect": {
       "port": 9399,
       "dataDir": "src/infra/database/firebaseSql/dataconnect/.dataconnect/pgliteData"
     },
     "firestore": { "port": 8080, "edition": "enterprise" },
+    "functions": { "port": 5001 },
     "ui": { "enabled": true, "port": 4000 }
   }
 }

@@ -1,13 +1,13 @@
 import { createUser, getUserByUid } from '@dataconnect/admin-generated';
 import { DataConnect } from 'firebase-admin/data-connect';
 import firebaseAdmin from '../../../../../configs/FirebaseAdminConfig.ts';
-import { getAuth } from 'firebase-admin/auth';
+import { getAuth, UserRecord } from 'firebase-admin/auth';
 import { inject, singleton } from 'tsyringe';
 
 import AppError from '../../../../../../app/errors/AppError.ts';
 import type {
   ICreateUserInput,
-  ICreateUserOutput,
+  // ICreateUserOutput,
   IFBSQLUserRepository,
   IGetUserByUidInput,
   IGetUserByUidOutput,
@@ -22,21 +22,32 @@ class FBSQLUserRepository implements IFBSQLUserRepository {
     this.fbsqlConn = fbsqlQuasagram.getConn();
   }
 
+  private async getUserFromFirebaseAuth(
+    email: string,
+  ): Promise<UserRecord | null> {
+    try {
+      const user = await getAuth(firebaseAdmin).getUserByEmail(email);
+
+      return user;
+    } catch {
+      return null;
+    }
+  }
+
   async createUser({
     email,
     password,
     displayName,
     phoneNumber,
-    profilePhoto: photoURL,
-  }: ICreateUserInput): Promise<ICreateUserOutput> {
+    // profilePhoto: photoURL,
+  }: ICreateUserInput): Promise<void> {
     try {
-      const existingUser = await getAuth(firebaseAdmin).getUserByEmail(email);
+      const existingUser = await this.getUserFromFirebaseAuth(email);
 
       if (existingUser) {
         throw new AppError({
           message: `An user with e-mail ${existingUser.email} already exists`,
           errorCode: 'USER_EMAIL_ALREADY_EXISTS',
-          internalMessage: String(existingUser.toJSON()),
         });
       }
 
@@ -46,7 +57,7 @@ class FBSQLUserRepository implements IFBSQLUserRepository {
           password,
           displayName,
           phoneNumber,
-          photoURL,
+          // photoURL,
         })
       ).uid;
 
@@ -55,7 +66,7 @@ class FBSQLUserRepository implements IFBSQLUserRepository {
         await createUser(this.fbsqlConn, { uid: uidFromCreatedUserInFbAuth })
       ).data.user_insert.uid;
 
-      return { uid: uidFromCreatedUserInFbsql };
+      console.log({ uidFromCreatedUserInFbsql });
     } catch (error) {
       if (error instanceof AppError) throw error;
 

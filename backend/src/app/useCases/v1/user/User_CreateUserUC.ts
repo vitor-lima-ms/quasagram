@@ -10,9 +10,9 @@ interface IInput {
   phoneNumber?: string;
 }
 
-interface IOutput {
-  uid: string;
-}
+// interface IOutput {
+//   uid: string;
+// }
 
 @injectable()
 class CreateUser {
@@ -31,16 +31,24 @@ class CreateUser {
     displayName,
     phoneNumber,
     profilePhoto,
-  }: IInput): Promise<IOutput> {
-    const user = this.fbsqlUserRepository.createUser({
+  }: IInput): Promise<void> {
+    // const user = this.fbsqlUserRepository.createUser({
+    //   email,
+    //   password,
+    //   displayName,
+    //   phoneNumber,
+    //   profilePhoto,
+    // });
+
+    // return user;
+
+    this.fbsqlUserRepository.createUser({
       email,
       password,
       displayName,
       phoneNumber,
       profilePhoto,
     });
-
-    return user;
   }
 }
 

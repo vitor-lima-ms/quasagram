@@ -23,6 +23,6 @@ export interface IGetUserByUidOutput {
 }
 
 export interface IFBSQLUserRepository {
-  createUser(input: ICreateUserInput): Promise<ICreateUserOutput>;
+  createUser(input: ICreateUserInput): Promise<void>;
   getUserByUid(input: IGetUserByUidInput): Promise<IGetUserByUidOutput>;
 }

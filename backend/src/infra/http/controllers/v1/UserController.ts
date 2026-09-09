@@ -8,7 +8,11 @@ class UserController {
   async createUser(req: Request, res: Response): Promise<Response> {
     const createUserUC = container.resolve(CreateUser);
 
-    return res.status(201).json(await createUserUC.execute(req.body));
+    return res
+      .status(201)
+      .json(
+        await createUserUC.execute({ ...req.body, profilePhoto: req.file }),
+      );
   }
 
   async getUserByUid(req: Request, res: Response): Promise<Response> {
