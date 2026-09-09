@@ -7,13 +7,8 @@ import type { Multer } from '@types/multer';
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 interface CustomExpressMulterFile extends Pick<
-  | Express.Multer.File
-  | 'buffer'
-  | 'encoding'
-  | 'fieldname'
-  | 'mimetype'
-  | 'originalname'
-  | 'size'
+  Express.Multer.File,
+  'buffer' | 'encoding' | 'fieldname' | 'mimetype' | 'originalname' | 'size'
 > {}
 
 declare module 'express-serve-static-core' {
@@ -24,11 +19,11 @@ declare module 'express-serve-static-core' {
   interface Request {
     // To use with Busboy (Multer does not work properly with Firebase Functions)
     rawBody?: Buffer;
-    file?: Express.Multer;
+    file?: Express.Multer.File | CustomExpressMulterFile;
     files?:
       | { [fieldname: string]: Express.Multer.File[] }
       | Express.Multer.File[]
       | CustomExpressMulterFile[]
-      | { [fieldname: string]: CustomExpressMulterFile[] }
+      | { [fieldname: string]: CustomExpressMulterFile[] };
   }
 }
