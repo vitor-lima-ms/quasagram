@@ -8,7 +8,7 @@
     "prettier": "npx prettier . --write",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "serve": "npm run build && firebase emulators:start",
+    "serve": "npm run build && firebase emulators:start --inspect-functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions:QUASAGRAM_API && firebase dataconnect:sql:migrate && firebase deploy --only dataconnect",
