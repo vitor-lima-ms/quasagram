@@ -1,6 +1,13 @@
 <template>
-  <q-item clickable tag="a" target="_blank" :href="link">
-    <q-item-section v-if="icon" avatar>
+  <q-item
+    clickable
+    exact
+    :to="toPage"
+  >
+    <q-item-section
+      v-if="icon"
+      avatar
+    >
       <q-icon :name="icon" />
     </q-item-section>
 
@@ -15,7 +22,7 @@
 
 <script>
 export default {
-  name: "EssentialLink",
+  name: 'DrawerLinks',
   props: {
     title: {
       type: String,
@@ -24,17 +31,17 @@ export default {
 
     caption: {
       type: String,
-      default: "",
+      default: '',
     },
 
-    link: {
+    toPage: {
       type: String,
-      default: "#",
+      default: '',
     },
 
     icon: {
       type: String,
-      default: "",
+      default: '',
     },
   },
 };
