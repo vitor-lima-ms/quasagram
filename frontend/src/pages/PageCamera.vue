@@ -5,7 +5,7 @@
 </template>
 
 <script>
-export default {
-  name: 'PageCamera',
-};
+  export default {
+    name: 'PageCamera',
+  };
 </script>

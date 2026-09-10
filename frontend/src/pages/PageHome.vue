@@ -5,7 +5,7 @@
 </template>
 
 <script>
-export default {
-  name: 'PageHome',
-};
+  export default {
+    name: 'PageHome',
+  };
 </script>
